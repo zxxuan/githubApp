@@ -6,7 +6,8 @@ import {
     StackNavigator
 } from 'react-navigation'
 import {
-    Text
+    Text,
+    Image
 } from 'react-native'
 import WelcomePage from './WelcomePage'
 import HomePage from './HomePage'
@@ -21,7 +22,7 @@ const AllRoute = {
     HomePage:{
         screen:HomePage,
         navigationOptions:()=>({
-            header: <NavigationBar title='首页' leftButton={<Text style={{color:'white',backgroundColor:'red'}}>返回</Text>} />
+            header: <NavigationBar  style={{backgroundColor:'#2196F3'}} title='首页' rightButton={<Image style={{width:24,height:24}} source={require('../../res/images/ic_search_white_48pt.png')}/>} />
         })
     }
 }

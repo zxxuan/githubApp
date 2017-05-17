@@ -1,71 +1,93 @@
 /**
  * Created by Administrator on 2017/5/10.
  */
-import React,{Component,PropTypes} from 'react'
+import React, {Component, PropTypes} from 'react'
 import {
     View,
     Text,
     StatusBar,
+    TouchableHighlight,
     StyleSheet,
-    Platform
+    Platform,
+    ViewPropTypes
 } from 'react-native'
 
 const NAV_BAR_HEIGHT_IOS = 44;
 const NAV_BAR_HEGHT_ANDROID = 50;
 const STATUS_BAR_HEIGHT = 20;
 const statusBarShape = {
-    hidden:PropTypes.bool,
-
+    hidden: PropTypes.bool,
+    translucent: PropTypes.bool,
+    barStyle: PropTypes.oneOf(['default', 'light-content', 'dark-content']),
+    backgroundColor: PropTypes.string,
 }
 
-export default class NavigationBar extends Component{
+export default class NavigationBar extends Component {
 
     static defaultProps = {
-        title:'',
-        hide:false,
-        statusBar:{
-            backgroundColor:'#2196F3',
+        title: '',
+        hide: false,
+        statusBar: {
+            backgroundColor: '#2196F3',
         },
-        leftButton:<View></View>,
-        rightButton:<View></View>
+        leftButton: <View></View>,
+        rightButton: <View></View>
     }
 
-    static propTypes={
-        title:PropTypes.string,
-        leftButton:PropTypes.element,
-        rightButton:PropTypes.element,
-        statusBar:PropTypes.shape(statusBarShape),
-        hide:PropTypes.bool
+    static propTypes = {
+        style: ViewPropTypes.style,
+        title: PropTypes.string,
+        titleView: PropTypes.element,
+        leftButton: PropTypes.element,
+        rightButton: PropTypes.element,
+        statusBar: PropTypes.shape(statusBarShape),
+        hide: PropTypes.bool,
+        onLeftButtonClick: PropTypes.func,
+        onRightButtonClick: PropTypes.func,
     }
 
 
-
-    render(){
-        return  <View style= {styles.container}>
+    render() {
+        return <View style={[styles.container, this.props.style]}>
             <StatusBar {...this.props.statusBar}/>
-            {this.props.hide?null:<View style={styles.nav}>
-                {this.props.leftButton}
-                <Text style={styles.title}>{this.props.title}</Text>
-                {this.props.rightButton}
-            </View>}
+            {this.props.hide ? null :
+                <View style={styles.nav}>
+                    <TouchableHighlight onPress={this.props.onLeftButtonClick}>{this.props.leftButton ?
+                        <View >{this.props.leftButton}</View> : <View></View> }
+                    </TouchableHighlight>
+                    {this.props.titleView ? <View style={styles.titleContainer}>{this.props.titleView}</View> :
+                        <View style={styles.titleContainer}><Text style={styles.title}>{this.props.title}</Text></View>}
+                    <TouchableHighlight onPress={this.props.onRightButtonClick}>{this.props.rightButton ?
+                        <View style={{marginRight:10}}>{this.props.rightButton}</View> : <View></View> }
+                    </TouchableHighlight>
+                </View>}
         </View>
     }
 }
 
 
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:'#000',
+    container: {
+        backgroundColor: '#000',
     },
-    nav:{
-        flexDirection:'row',
-        height:Platform.OS === 'ios'?NAV_BAR_HEIGHT_IOS:NAV_BAR_HEGHT_ANDROID,
-        alignItems:'center',
-        justifyContent:'space-between'
+    nav: {
+        flexDirection: 'row',
+        height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEGHT_ANDROID,
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
-    title:{
-        backgroundColor:'red',
-        color:'white',
-        fontSize:16,
+    title: {
+        color: 'white',
+        fontSize: 18,
+
+    },
+    titleContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        left:45,
+        right:45,
+        top: 0,
+        bottom: 0,
     }
 })
