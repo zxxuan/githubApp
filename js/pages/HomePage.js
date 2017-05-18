@@ -17,6 +17,8 @@ import {
 
 import TabNavigator from 'react-native-tab-navigator'
 import PopularPage from './PopularPage'
+import TrendingPage from './TrendingPage'
+import {main_color} from '../config/config'
 
 export default class HomePage extends Component {
 
@@ -29,11 +31,11 @@ export default class HomePage extends Component {
 
     renderItem(Component,title,icon,selectedTab){
         return <TabNavigator.Item
-            selectedTitleStyle={{color:'red'}}
+            selectedTitleStyle={{color:main_color}}
             selected={this.state.selectedTab === selectedTab}
             title={title}
             renderIcon={()=><Image style={styles.icon}  source={icon}/> }
-            renderSelectedIcon={()=><Image style={[styles.icon,{tintColor:'red'}]} source={icon}/>}
+            renderSelectedIcon={()=><Image style={[styles.icon,{tintColor:main_color}]} source={icon}/>}
             onPress={()=>
                 this.setState({
                     selectedTab:selectedTab
@@ -47,7 +49,7 @@ export default class HomePage extends Component {
     render() {
         return <TabNavigator>
             {this.renderItem(PopularPage,'Popular',require('../../res/images/ic_polular.png'),'Popular')}
-            {this.renderItem( PopularPage,'Trending',require('../../res/images/ic_trending.png'),'Trending')}
+            {this.renderItem( TrendingPage,'Trending',require('../../res/images/ic_trending.png'),'Trending')}
             {this.renderItem( PopularPage,'Favorite',require('../../res/images/ic_favorite.png'),'Favorite')}
             {this.renderItem( PopularPage,'My',require('../../res/images/ic_my.png'),'My')}
         </TabNavigator>

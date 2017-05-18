@@ -22,7 +22,7 @@ const AllRoute = {
     HomePage:{
         screen:HomePage,
         navigationOptions:()=>({
-            header: <NavigationBar  style={{backgroundColor:'#2196F3'}} title='首页' rightButton={<Image style={{width:24,height:24}} source={require('../../res/images/ic_search_white_48pt.png')}/>} />
+            header:null
         })
     }
 }
