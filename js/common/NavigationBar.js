@@ -6,7 +6,7 @@ import {
     View,
     Text,
     StatusBar,
-    TouchableHighlight,
+    TouchableOpacity,
     StyleSheet,
     Platform,
     ViewPropTypes
@@ -52,14 +52,14 @@ export default class NavigationBar extends Component {
             <StatusBar {...this.props.statusBar}/>
             {this.props.hide ? null :
                 <View style={styles.nav}>
-                    <TouchableHighlight onPress={this.props.onLeftButtonClick}>{this.props.leftButton ?
-                        <View >{this.props.leftButton}</View> : <View></View> }
-                    </TouchableHighlight>
+                    <TouchableOpacity onPress={this.props.onLeftButtonClick}>{this.props.leftButton ?
+                        <View style={{marginLeft:5}}>{this.props.leftButton}</View> : <View></View> }
+                    </TouchableOpacity>
                     {this.props.titleView ? <View style={styles.titleContainer}>{this.props.titleView}</View> :
                         <View style={styles.titleContainer}><Text style={styles.title}>{this.props.title}</Text></View>}
-                    <TouchableHighlight onPress={this.props.onRightButtonClick}>{this.props.rightButton ?
+                    <TouchableOpacity onPress={this.props.onRightButtonClick}>{this.props.rightButton ?
                         <View style={{marginRight:10}}>{this.props.rightButton}</View> : <View></View> }
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>}
         </View>
     }
@@ -68,7 +68,7 @@ export default class NavigationBar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#000',
+        backgroundColor: '#2196F3',
     },
     nav: {
         flexDirection: 'row',

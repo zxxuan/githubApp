@@ -1,17 +1,11 @@
 /**
  * Created by Administrator on 2017/5/10.
  */
-import React,{Component} from 'react'
-import {
-    StackNavigator
-} from 'react-navigation'
-import {
-    Text,
-    Image
-} from 'react-native'
-import WelcomePage from './WelcomePage'
-import HomePage from './HomePage'
-import NavigationBar from "../common/NavigationBar";
+import React, {Component} from "react";
+import {StackNavigator} from "react-navigation";
+import WelcomePage from "./WelcomePage";
+import HomePage from "./HomePage";
+import CustomKeyPage from "./CustomKeyPage";
 const AllRoute = {
     WelcomePage:{
         screen:WelcomePage,
@@ -24,6 +18,12 @@ const AllRoute = {
         navigationOptions:()=>({
             header:null
         })
+    },
+    CustomKeyPage:{
+        screen:CustomKeyPage,
+        navigationOptions:()=>{
+            return {header:null}
+        }
     }
 }
 

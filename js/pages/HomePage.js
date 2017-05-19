@@ -4,21 +4,15 @@
 /**
  * Created by Administrator on 2017/5/10.
  */
-import React, {Component} from 'react'
-import {
-    View,
-    Image,
-    Text,
-    StyleSheet
-} from 'react-native'
-import {
-    NavigationActions
-} from 'react-navigation'
+import React, {Component} from "react";
+import {Image, StyleSheet} from "react-native";
 
-import TabNavigator from 'react-native-tab-navigator'
-import PopularPage from './PopularPage'
-import TrendingPage from './TrendingPage'
-import {main_color} from '../config/config'
+import TabNavigator from "react-native-tab-navigator";
+import PopularPage from "./PopularPage";
+import AsyncStorageTest from "./AsyncStorageTest";
+import TrendingPage from "./TrendingPage";
+import {main_color} from "../config/config";
+import MyPage from './MyPage'
 
 export default class HomePage extends Component {
 
@@ -42,7 +36,7 @@ export default class HomePage extends Component {
                 })
             }
         >
-           <Component/>
+           <Component navigation={this.props.navigation}/>
         </TabNavigator.Item>
     }
 
@@ -50,8 +44,8 @@ export default class HomePage extends Component {
         return <TabNavigator>
             {this.renderItem(PopularPage,'Popular',require('../../res/images/ic_polular.png'),'Popular')}
             {this.renderItem( TrendingPage,'Trending',require('../../res/images/ic_trending.png'),'Trending')}
-            {this.renderItem( PopularPage,'Favorite',require('../../res/images/ic_favorite.png'),'Favorite')}
-            {this.renderItem( PopularPage,'My',require('../../res/images/ic_my.png'),'My')}
+            {this.renderItem( AsyncStorageTest,'Favorite',require('../../res/images/ic_favorite.png'),'Favorite')}
+            {this.renderItem( MyPage,'My',require('../../res/images/ic_my.png'),'My')}
         </TabNavigator>
     }
 
