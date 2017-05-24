@@ -15,33 +15,54 @@ import DataRepository from '../dao/DataRepository'
 import NavigationBar from '../common/NavigationBar'
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import {main_color, white, white_translucent} from '../config/config'
+import KeysDao, {FLAG_LANGUAGE} from '../dao/KeysDao'
+
+
 export default class PopularPage extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
+        this.keysDao = new KeysDao(FLAG_LANGUAGE.flag_key)
+        this.state = {
+            keys: []
+        }
     }
+
+    componentDidMount() {
+        this.keysDao.fetchKeys()
+            .then(keys => {
+                this.setState({
+                    keys: keys
+                })
+            })
+            .catch((error) => {
+            })
+    }
+
+
     render() {
+        let content = this.state.keys.length === 0 ? null : <ScrollableTabView tabBarBackgroundColor={main_color}
+                                                                               tabBarActiveTextColor={white}
+                                                                               tabBarInactiveTextColor={white_translucent}
+                                                                               tabBarTextStyle={{fontSize: 14}}
+                                                                               tabBarUnderlineStyle={{
+                                                                                   height: 2,
+                                                                                   backgroundColor: white
+                                                                               }}
+                                                                               renderTabBar={() => <ScrollableTabBar/>}
+        >
+            {this.state.keys.map((item, index, arr) => {
+                return item.checked ? <PopularItemPage style={{flex: 1}} key={index}
+                                                       tabLabel={item.name}>{item.name}</PopularItemPage> : null
+            })}
+        </ScrollableTabView>
+
+
         return (<View style={{flex: 1}}>
             <NavigationBar style={{backgroundColor: main_color}} title='Popular'
                            rightButton={<Image style={{width: 24, height: 24}}
                                                source={require('../../res/images/ic_search_white_48pt.png')}/>}/>
-
-            <ScrollableTabView tabBarBackgroundColor={main_color}
-                               tabBarActiveTextColor={white}
-                               tabBarInactiveTextColor={white_translucent}
-                               tabBarTextStyle={{fontSize: 14}}
-                               tabBarUnderlineStyle={{height: 2, backgroundColor: white}}
-                               renderTabBar={() => <ScrollableTabBar/>}
-            >
-                <PopularItemPage tabLabel='Android'>My</PopularItemPage>
-                <PopularItemPage tabLabel='IOS'>favorite</PopularItemPage>
-                <PopularItemPage tabLabel='JavaScript'>project</PopularItemPage>
-                <PopularItemPage tabLabel='C++'>project</PopularItemPage>
-                <PopularItemPage tabLabel='java'>project</PopularItemPage>
-                <PopularItemPage tabLabel='c#'>project</PopularItemPage>
-            </ScrollableTabView>
-
-
+            {content}
         </View>)
     }
 
@@ -65,7 +86,7 @@ class PopularItemPage extends Component {
         this.loadData()
     }
 
-    loadData(){
+    loadData() {
         console.log(this.props.tabLabel)
         var URL = `https://api.github.com/search/repositories?q=${this.props.tabLabel}&sort=stars`
         this.dataRepository.fetchRepository(URL)
@@ -82,13 +103,14 @@ class PopularItemPage extends Component {
     }
 
     render() {
-        return <View style={{flex:1}}>
+        return <View style={{flex: 1}}>
             <ListView dataSource={this.state.dataSource}
                       renderRow={(rowData) =>
                           this.renderRow(rowData)
                       }
                       refreshControl={
-                          <RefreshControl refreshing={this.state.isLoading} onRefresh={()=>this.loadData()} colors={[main_color]}/>
+                          <RefreshControl refreshing={this.state.isLoading} onRefresh={() => this.loadData()}
+                                          colors={[main_color]}/>
                       }
             />
         </View>

@@ -34,4 +34,10 @@ export default class KeysDao{
         })
     }
 
+    cleanKeys(){
+        AsyncStorage.removeItem(this.flag,(error)=>{
+
+        })
+    }
+
 }
