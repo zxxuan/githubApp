@@ -5,7 +5,7 @@
  * Created by Administrator on 2017/5/10.
  */
 import React, {Component} from "react";
-import {Image, StyleSheet} from "react-native";
+import {Image, StyleSheet,DeviceEventEmitter,ToastAndroid} from "react-native";
 
 import TabNavigator from "react-native-tab-navigator";
 import PopularPage from "./PopularPage";
@@ -21,6 +21,13 @@ export default class HomePage extends Component {
         this.state = {
             selectedTab:'Popular'
         }
+    }
+    componentDidMount(){
+        this.dataOriginListener = DeviceEventEmitter.addListener('dataChangeListener',(message)=>{ToastAndroid.show(message,ToastAndroid.SHORT)})
+    }
+
+    componentWillUnmount(){
+        this.dataOriginListener && this.dataOriginListener.remove()
     }
 
     renderItem(Component,title,icon,selectedTab){

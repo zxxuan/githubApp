@@ -28,7 +28,7 @@ export default class CustomKeyPage extends Component {
             dataArrays: [],
             checked: false
         }
-        this.backPress = new BackPressComponent({backPress:(e)=>this.onBackPress(e)})
+        this.backPress = this.back.bind(this)
     }
 
     componentDidMount() {
@@ -41,14 +41,22 @@ export default class CustomKeyPage extends Component {
             .catch(error => {
                 console.log(JSON.stringify(error))
             })
-      this.backPress.componentDidMount()
+
+        BackHandler.addEventListener("hardwareBackPress",this.backPress)
+
     }
 
 
     componentWillUnmount(){
-        this.backPress.componentWillUnmount()
+
+        BackHandler.removeEventListener("hardwareBackPress",this.backPress)
+
     }
 
+    back(){
+        this.onBack()
+        return true
+    }
     onBackPress(e){
             this.onBack()
             return true

@@ -9,7 +9,8 @@ import {
     StyleSheet,
     Image,
     ListView,
-    RefreshControl
+    RefreshControl,
+    TouchableNativeFeedback
 } from 'react-native'
 import DataRepository from '../dao/DataRepository'
 import NavigationBar from '../common/NavigationBar'
@@ -41,18 +42,19 @@ export default class PopularPage extends Component {
 
 
     render() {
-        let content = this.state.keys.length === 0 ? null : <ScrollableTabView tabBarBackgroundColor={main_color}
-                                                                               tabBarActiveTextColor={white}
-                                                                               tabBarInactiveTextColor={white_translucent}
-                                                                               tabBarTextStyle={{fontSize: 14}}
-                                                                               tabBarUnderlineStyle={{
-                                                                                   height: 2,
-                                                                                   backgroundColor: white
-                                                                               }}
-                                                                               renderTabBar={() => <ScrollableTabBar/>}
+        let content = this.state.keys.length === 0 ? null : <ScrollableTabView
+            tabBarBackgroundColor={main_color}
+            tabBarActiveTextColor={white}
+            tabBarInactiveTextColor={white_translucent}
+            tabBarTextStyle={{fontSize: 14}}
+            tabBarUnderlineStyle={{
+                height: 2,
+                backgroundColor: white
+            }}
+            renderTabBar={() => <ScrollableTabBar/>}
         >
             {this.state.keys.map((item, index, arr) => {
-                return item.checked ? <PopularItemPage style={{flex: 1}} key={index}
+                return item.checked ? <PopularItemPage navigation = {this.props.navigation} style={{flex: 1}} key={index}
                                                        tabLabel={item.name}>{item.name}</PopularItemPage> : null
             })}
         </ScrollableTabView>
@@ -118,18 +120,21 @@ class PopularItemPage extends Component {
     }
 
     renderRow(data) {
-        return <View style={styles.row}>
-            <Text style={styles.title}>{data.full_name}</Text>
-            <Text style={styles.description}>{data.description}</Text>
-            <View style={styles.avatarContainer}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text>Author:</Text>
-                    <Image source={{uri: data.owner.avatar_url, width: 22, height: 22}}/>
+        return(<TouchableNativeFeedback onPress = {()=>{
+            this.props.navigation.navigate('RepositoryDetail',{data:data})
+        }}>
+            <View style={styles.row}>
+                <Text style={styles.title}>{data.full_name}</Text>
+                <Text style={styles.description}>{data.description}</Text>
+                <View style={styles.avatarContainer}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text>Author:</Text>
+                        <Image source={{uri: data.owner.avatar_url, width: 22, height: 22}}/>
+                    </View>
+                    <Text>Stars:{data.stargazers_count}</Text>
+                    <Image source={require('../../res/images/ic_star.png')} style={{width: 22, height: 22}}></Image>
                 </View>
-                <Text>Stars:{data.stargazers_count}</Text>
-                <Image source={require('../../res/images/ic_star.png')} style={{width: 22, height: 22}}></Image>
-            </View>
-        </View>
+            </View></TouchableNativeFeedback>)
     }
 }
 
